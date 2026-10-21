@@ -160,7 +160,7 @@
   }
 
   function setOverlay(title,subline,pct=null,countText='—',eyebrow=null) {
-    $('#mapHontent = title;
+    $('#mapHeadline').textContent = title;
     $('#mapSubline').textContent = subline || '';
     $('#mapEyebrow').textContent = eyebrow || (state.office==='governador'?'Governador':'Presidente da República');
     $('#mapProgress').textContent = pct == null ? '—' : fmtPct(pct);

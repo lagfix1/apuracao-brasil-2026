@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#071018">
+  <meta name="description" content="Painel independente para acompanhamento dos resultados oficiais das Eleições 2026 publicados pelo TSE.">
+  <title>Apuração Brasil 2026</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/icons/icon-192.png">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">AB</div>
+      <div>
+        <h1>Apuração Brasil <span>2026</span></h1>
+        <p>Mapa interativo · dados oficiais publicados pelo TSE</p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <div id="liveState" class="live-state waiting"><span></span><b>Aguardando</b></div>
+      <button id="fullscreenBtn" class="icon-btn" title="Tela cheia" aria-label="Tela cheia">⛶</button>
+    </div>
+  </header>
+
+  <div id="testBanner" class="test-banner hidden">MODO TESTE · exibindo os dados oficiais encerrados do 1º turno</div>
+
+  <main class="dashboard">
+    <section class="controlbar card-lite">
+      <div class="seg-group" aria-label="Turno">
+        <button id="round2Btn" class="seg active">2º turno</button>
+        <button id="round1Btn" class="seg">Teste 1º turno</button>
+      </div>
+
+      <div class="seg-group" aria-label="Cargo">
+        <button class="office-btn seg active" data-office="presidente">Presidente</button>
+        <button class="office-btn seg" data-office="governador">Governador</button>
+      </div>
+
+      <div id="viewGroup" class="seg-group" aria-label="Mapa">
+        <button class="view-btn seg active" data-view="brasil">Brasil</button>
+        <button class="view-btn seg" data-view="exterior">Exterior</button>
+      </div>
+
+      <div class="eco-badge" title="Cache central, respostas compactadas e atualização sob demanda">◉ Modo econômico</div>
+
+      <div class="search-box">
+        <span class="search-icon">⌕</span>
+        <input id="placeSearch" type="search" placeholder="Pesquisar cidade, estado ou país…" autocomplete="off" spellcheck="false">
+        <button id="clearSearch" class="search-clear hidden" aria-label="Limpar pesquisa">×</button>
+        <div id="searchResults" class="search-results hidden"></div>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <div class="map-card">
+        <div class="map-overlay map-title-card">
+          <span id="mapEyebrow" class="eyebrow">Presidente da República</span>
+          <h2 id="mapHeadline">Brasil</h2>
+          <div id="mapSubline" class="map-subline">Carregando dados oficiais…</div>
+        </div>
+
+        <div class="map-overlay map-progress-card">
+          <span>Seções totalizadas</span>
+          <strong id="mapProgress">—</strong>
+          <small id="mapProgressCount">—</small>
+        </div>
+
+        <div id="brasilMapWrap" class="map-view active">
+          <svg id="brasilMap" viewBox="0 0 720 720" role="img" aria-label="Mapa do Brasil por unidade da Federação"></svg>
+        </div>
+
+        <div id="worldMapWrap" class="map-view">
+          <svg id="worldMap" viewBox="0 0 1000 500" role="img" aria-label="Mapa mundial dos locais de votação no exterior"></svg>
+        </div>
+
+        <div id="mapTooltip" class="map-tooltip hidden"></div>
+        <div class="map-hint"><span>●</span> Clique no mapa ou use a pesquisa para abrir o recorte</div>
+      </div>
+
+      <aside id="detailPanel" class="detail-panel card">
+        <div class="skeleton tall"></div>
+      </aside>
+    </section>
+  </main>
+
+  <footer>
+    <div><b>Apuração Brasil 2026 v0.3</b> · modo apuração econômico · projeto independente, sem vínculo com o TSE.</div>
+    <div>Fonte primária: <a href="https://resultados.tse.jus.br" target="_blank" rel="noreferrer">resultados.tse.jus.br</a> · <span id="lastUiUpdate">—</span></div>
+  </footer>
+
+  <template id="waitingTemplate">
+    <div class="waiting-card">
+      <div class="radar"><i></i></div>
+      <div><h3>Aguardando publicação do TSE</h3><p>O painel está preparado para o 2º turno. Quando o arquivo oficial estiver disponível, a tela passa a carregar automaticamente.</p></div>
+    </div>
+  </template>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>

@@ -26,12 +26,14 @@
     meta: null,
     pollTimer: null,
     statePollTimer: null,
+    nationalSummaryTimer: null,
     stateSnapshot: null,
     lastStatesAt: 0,
     httpCache: new Map(),
     brazilMap: null,
     worldGeo: null,
     countryCatalog: [],
+    capitals: [],
     selectedState: null,
     selectedCountry: null,
     currentSelection: {type:'national'},
@@ -100,6 +102,7 @@
       return `
       <div class="candidate-row ${pos===1 && Number(c.votes||0)>0 ? 'leader' : ''}">
         <div class="candidate-ident">
+          <div class="candidate-photo"><span>${esc((c.name || '?').trim().charAt(0) || '?')}</span>${c.photo_url ? `<img src="${esc(c.photo_url)}" alt="${esc(c.name || 'Candidato')}" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}</div>
           <div class="candidate-number">${esc(c.number || '—')}</div>
           <div>
             <div class="candidate-title-line"><b>${esc(c.name || '—')}</b>${pos ? `<span class="rank-badge">${pos}º</span>` : ''}${pos===1 && Number(c.votes||0)>0 ? '<span class="leader-badge">LIDERANDO</span>' : ''}</div>
@@ -190,6 +193,7 @@
       const d = b.data;
       box.innerHTML = detailHtml(d,'Brasil',`Presidente · atualizado ${fmtTime(d.generated_at)}`);
       bindCandidateSort(d.candidates);
+      renderNationalSummary(d);
       overlayFromData(d,'Brasil');
       setLive(d.fetch?.stale?'stale':'live',d.fetch?.stale?'Último dado':'TSE online');
       updateUiTime();
@@ -200,6 +204,54 @@
       setOverlay('Brasil',waiting?'Aguardando publicação do arquivo oficial':e.message,null,'—');
       setLive(waiting?'waiting':'error',waiting?'Aguardando TSE':'Falha');
     }
+  }
+
+  function renderNationalSummary(d) {
+    const el = $('#nationalSummary');
+    if (!el) return;
+    if (state.office !== 'presidente') { el.classList.add('hidden'); return; }
+    el.classList.remove('hidden');
+    const top = [...(d.candidates || [])].sort((a,b)=>Number(b.votes||0)-Number(a.votes||0) || Number(b.pct||0)-Number(a.pct||0)).slice(0,3);
+    el.innerHTML = `
+      <button class="national-open" type="button">
+        <span class="national-kicker">BRASIL GERAL</span>
+        <strong>${fmtPct(d.sections?.pct)}</strong>
+        <small>${fmtInt(d.sections?.counted)} / ${fmtInt(d.sections?.total)} seções</small>
+      </button>
+      <div class="national-candidates">
+        ${top.map((c,i)=>`<div class="national-candidate">
+          <div class="national-photo"><span>${esc((c.name||'?').trim().charAt(0)||'?')}</span>${c.photo_url?`<img src="${esc(c.photo_url)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">`:''}</div>
+          <div><b>${esc(c.name||'—')}</b><small>${esc(c.party||'—')} · ${fmtInt(c.votes)} votos</small></div>
+          <strong>${fmtPct(c.pct)}</strong>
+        </div>`).join('')}
+      </div>
+      <div class="national-updated">Atualizado ${fmtTime(d.generated_at)}</div>`;
+    $('.national-open',el)?.addEventListener('click',async()=>{
+      if (state.view !== 'brasil') await setView('brasil',false);
+      state.selectedState=null; state.selectedCountry=null; state.currentSelection={type:'national'};
+      renderBrazilMap(); await loadNational(false); startPolling();
+    });
+  }
+
+  async function loadNationalSummary(silent=true) {
+    const el = $('#nationalSummary');
+    if (!el || state.office !== 'presidente') { if(el) el.classList.add('hidden'); return; }
+    try {
+      const b = await apiGet(`/api/result?office=presidente&scope=br&round=${state.round}`);
+      renderNationalSummary(b.data);
+    } catch(e) {
+      if (!silent) el.innerHTML = `<div class="national-summary-loading">${state.round===2 && e.status===404 ? 'Brasil geral · aguardando publicação do TSE' : esc(e.message)}</div>`;
+    }
+  }
+
+  async function loadCapitals() {
+    try {
+      const b = await apiGet(`/api/capitals?round=${state.round}`,25000);
+      state.capitals = b.data.capitals || [];
+      const sel = $('#capitalSelect');
+      if (!sel) return;
+      sel.innerHTML = '<option value="">Capitais…</option>' + state.capitals.map((c,i)=>`<option value="${i}">${esc(c.label)} · ${esc(c.uf.toUpperCase())}</option>`).join('');
+    } catch(e) { state.capitals=[]; }
   }
 
   function governorLanding() {
@@ -241,8 +293,10 @@
     }).join('');
     const labels = state.brazilMap.map(item => {
       const uf = item.uf.toLowerCase();
+      const d = stateDatum(uf);
       const small = ['df','se','al','es','rj'].includes(uf) ? ' small' : '';
-      return `<text class="br-label${small}" x="${item.center[0]}" y="${item.center[1]}">${item.uf}</text>`;
+      const pct = d?.available ? Number(d.sections_pct||0).toLocaleString('pt-BR',{maximumFractionDigits:1})+'%' : '—';
+      return `<text class="br-label${small}" x="${item.center[0]}" y="${item.center[1]-5}">${item.uf}</text><text class="br-progress${small}" x="${item.center[0]}" y="${item.center[1]+9}">${pct}</text>`;
     }).join('');
     svg.innerHTML = `<g transform="translate(5,0)">${paths}${labels}</g>`;
     $$('.br-state',svg).forEach(p => {
@@ -451,9 +505,12 @@
     const exteriorBtn = $('.view-btn[data-view="exterior"]');
     exteriorBtn.disabled = office !== 'presidente';
     if (office==='governador' && state.view==='exterior') await setView('brasil',false);
-    if (office==='governador') governorLanding();
-    else if (state.view==='brasil') { state.currentSelection={type:'national'}; await loadNational(); }
-    else await loadExteriorTotal();
+    if (office==='governador') { $('#nationalSummary')?.classList.add('hidden'); governorLanding(); }
+    else {
+      await loadNationalSummary(false);
+      if (state.view==='brasil') { state.currentSelection={type:'national'}; await loadNational(); }
+      else await loadExteriorTotal();
+    }
     $('#placeSearch').placeholder = office==='presidente' ? 'Pesquisar cidade, estado ou país…' : 'Pesquisar cidade ou estado…';
     closeSearch();
     renderBrazilMap(); renderWorld();
@@ -471,6 +528,7 @@
     state.stateSnapshot = null;
     updateRoundUi();
     await loadMeta().catch(()=>{});
+    await loadCapitals();
     await loadStates();
     await refreshCurrent(true,false);
     startPolling();
@@ -572,8 +630,10 @@
   function stopPolling() {
     clearTimeout(state.pollTimer);
     clearTimeout(state.statePollTimer);
+    clearTimeout(state.nationalSummaryTimer);
     state.pollTimer = null;
     state.statePollTimer = null;
+    state.nationalSummaryTimer = null;
   }
 
   function scheduleCurrentPoll(delaySeconds=null) {
@@ -596,11 +656,22 @@
     },(delaySeconds ?? seconds)*1000);
   }
 
+  function scheduleNationalSummaryPoll(delaySeconds=null) {
+    clearTimeout(state.nationalSummaryTimer);
+    if (!shouldPoll() || state.office !== 'presidente' || state.currentSelection?.type === 'national') return;
+    const seconds = Math.max(10,Number(state.meta?.poll_seconds || 15));
+    state.nationalSummaryTimer = setTimeout(async()=>{
+      try { await loadNationalSummary(true); } catch {}
+      scheduleNationalSummaryPoll();
+    },(delaySeconds ?? seconds)*1000);
+  }
+
   function startPolling() {
     stopPolling();
     if (!shouldPoll()) return;
     scheduleCurrentPoll();
     scheduleStatesPoll();
+    scheduleNationalSummaryPoll();
   }
 
   async function resumeAfterPause() {
@@ -609,6 +680,7 @@
       const stateAge = Date.now() - (state.lastStatesAt || 0);
       const stateEvery = Math.max(60,Number(state.meta?.states_poll_seconds || 120))*1000;
       if (state.view === 'brasil' && stateAge >= stateEvery) await loadStates(true);
+      if (state.office === 'presidente' && state.currentSelection?.type !== 'national') await loadNationalSummary(true);
       await refreshCurrent(false,true);
     } catch {}
     startPolling();
@@ -619,6 +691,12 @@
     $('#round1Btn').addEventListener('click',()=>setRound(1));
     $$('.office-btn').forEach(b=>b.addEventListener('click',()=>setOffice(b.dataset.office)));
     $$('.view-btn').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view,true)));
+    $('#capitalSelect')?.addEventListener('change',async ev=>{
+      const idx = Number(ev.target.value);
+      if (!Number.isInteger(idx) || !state.capitals[idx]) return;
+      const item = state.capitals[idx];
+      await selectMunicipality(item);
+    });
     $('#fullscreenBtn').addEventListener('click',async()=>{
       try { if (!document.fullscreenElement) await document.documentElement.requestFullscreen(); else await document.exitFullscreen(); } catch {}
     });
@@ -638,6 +716,7 @@
     try { await initBrazil(); } catch(e) { console.warn('Falha ao carregar cartografia local',e); }
     try {
       await loadMeta();
+      await loadCapitals();
       await loadStates();
       await loadNational();
       startPolling();

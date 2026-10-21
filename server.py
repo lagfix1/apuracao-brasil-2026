@@ -139,7 +139,7 @@ def result(scope,office,round_no):
         if scope not in UFS: raise DataError("Selecione uma UF para Governador.",400)
         el,oc=codes["state"],3
     else: raise DataError("Cargo não suportado.",400)
-    url=result_url(el,scope,oc); raw,fm=FETCH.get(url); d=normalize(raw); add_photos(d,el,"br" if office=="presidente" else scope); d.update(source_url=url,fetch=fm,resolved=codes); return d
+    url=result_url(el,scope,oc); raw,fm=FETCH.get(url); d=normalize(raw); add_photos(d,el,scope); d.update(source_url=url,fetch=fm,resolved=codes); return d
 
 def states(round_no):
     codes=resolve(round_no); el=codes["federal"]
@@ -184,7 +184,7 @@ def municipality(uf,code,office,round_no):
     if office=="presidente": el,oc=codes["federal"],1
     elif office=="governador" and uf in UFS: el,oc=codes["state"],3
     else: raise DataError("Cargo/UF inválidos.",400)
-    url=municipal_url(el,uf,code,oc); raw,fm=FETCH.get(url); d=normalize(raw); add_photos(d,el,"br" if office=="presidente" else uf); d.update(source_url=url,fetch=fm,resolved=codes); return d
+    url=municipal_url(el,uf,code,oc); raw,fm=FETCH.get(url); d=normalize(raw); add_photos(d,el,uf); d.update(source_url=url,fetch=fm,resolved=codes); return d
 
 def search(q,round_no,office,limit=24):
     qn=norm(q).strip()
@@ -270,7 +270,7 @@ def aggregate_country(iso,round_no):
     for x in cs:x["pct"]=100*x["votes"]/votes["valid"] if votes["valid"] else 0
     cs.sort(key=lambda x:(-x["votes"],-x["pct"],norm(x["name"])))
     for x in cs:
-        if x.get("sq"): x["photo_url"]=photo_url(el,"br",x["sq"])
+        if x.get("sq"): x["photo_url"]=photo_url(el,"zz",x["sq"])
     return {"iso":iso,"country":country["country"],"round":round_no,"election":el,"available":True,"generated_at":max([g for g in gens if g] or [None]),"stale":stale,"sections":sec,"electorate":ele,"votes":votes,"candidates":cs,"cities":city_rows,"missing":missing,"source":"Tribunal Superior Eleitoral"}
 
 def addresses(port):

@@ -1,0 +1,1118 @@
+[
+  {
+    "iso": "AL",
+    "country": "Albânia",
+    "code": "99139",
+    "city": "Tirana"
+  },
+  {
+    "iso": "DE",
+    "country": "Alemanha",
+    "code": "29386",
+    "city": "Berlim"
+  },
+  {
+    "iso": "DE",
+    "country": "Alemanha",
+    "code": "29696",
+    "city": "Frankfurt"
+  },
+  {
+    "iso": "DE",
+    "country": "Alemanha",
+    "code": "30180",
+    "city": "Munique"
+  },
+  {
+    "iso": "AO",
+    "country": "Angola",
+    "code": "29998",
+    "city": "Luanda"
+  },
+  {
+    "iso": "AG",
+    "country": "Antígua e Barbuda",
+    "code": "99147",
+    "city": "Saint John's"
+  },
+  {
+    "iso": "AR",
+    "country": "Argentina",
+    "code": "29467",
+    "city": "Buenos Aires"
+  },
+  {
+    "iso": "AR",
+    "country": "Argentina",
+    "code": "29602",
+    "city": "Córdoba"
+  },
+  {
+    "iso": "AR",
+    "country": "Argentina",
+    "code": "39004",
+    "city": "Mendoza"
+  },
+  {
+    "iso": "AR",
+    "country": "Argentina",
+    "code": "30295",
+    "city": "Paso de los Libres"
+  },
+  {
+    "iso": "AR",
+    "country": "Argentina",
+    "code": "99155",
+    "city": "Puerto Iguazú"
+  },
+  {
+    "iso": "DZ",
+    "country": "Argélia",
+    "code": "29300",
+    "city": "Argel"
+  },
+  {
+    "iso": "AM",
+    "country": "Armênia",
+    "code": "38989",
+    "city": "Ierevan"
+  },
+  {
+    "iso": "SA",
+    "country": "Arábia Saudita",
+    "code": "30422",
+    "city": "Riade"
+  },
+  {
+    "iso": "AU",
+    "country": "Austrália",
+    "code": "29491",
+    "city": "Camberra"
+  },
+  {
+    "iso": "AU",
+    "country": "Austrália",
+    "code": "30562",
+    "city": "Sydney"
+  },
+  {
+    "iso": "AZ",
+    "country": "Azerbaijão",
+    "code": "39128",
+    "city": "Baku"
+  },
+  {
+    "iso": "BS",
+    "country": "Bahamas",
+    "code": "99180",
+    "city": "Nassau"
+  },
+  {
+    "iso": "BD",
+    "country": "Bangladesh",
+    "code": "29629",
+    "city": "Daca"
+  },
+  {
+    "iso": "BB",
+    "country": "Barbados",
+    "code": "29424",
+    "city": "Bridgetown"
+  },
+  {
+    "iso": "BH",
+    "country": "Barein",
+    "code": "99473",
+    "city": "Barein"
+  },
+  {
+    "iso": "BZ",
+    "country": "Belize",
+    "code": "38881",
+    "city": "Belmopan"
+  },
+  {
+    "iso": "BJ",
+    "country": "Benim",
+    "code": "38920",
+    "city": "Cotonou"
+  },
+  {
+    "iso": "BO",
+    "country": "Bolívia",
+    "code": "99210",
+    "city": "Cobija"
+  },
+  {
+    "iso": "BO",
+    "country": "Bolívia",
+    "code": "29572",
+    "city": "Cochabamba"
+  },
+  {
+    "iso": "BO",
+    "country": "Bolívia",
+    "code": "29904",
+    "city": "La Paz"
+  },
+  {
+    "iso": "BO",
+    "country": "Bolívia",
+    "code": "99236",
+    "city": "Puerto Quijarro"
+  },
+  {
+    "iso": "BO",
+    "country": "Bolívia",
+    "code": "30473",
+    "city": "Santa Cruz de la Sierra"
+  },
+  {
+    "iso": "BW",
+    "country": "Botsuana",
+    "code": "30669",
+    "city": "Gaborone"
+  },
+  {
+    "iso": "BG",
+    "country": "Bulgária",
+    "code": "30546",
+    "city": "Sófia"
+  },
+  {
+    "iso": "BF",
+    "country": "Burkina Faso",
+    "code": "39284",
+    "city": "Uagadugu"
+  },
+  {
+    "iso": "BE",
+    "country": "Bélgica",
+    "code": "29432",
+    "city": "Bruxelas"
+  },
+  {
+    "iso": "BA",
+    "country": "Bósnia e Herzegovina",
+    "code": "30988",
+    "city": "Sarajevo"
+  },
+  {
+    "iso": "CV",
+    "country": "Cabo Verde",
+    "code": "30368",
+    "city": "Praia"
+  },
+  {
+    "iso": "CM",
+    "country": "Camarões",
+    "code": "29815",
+    "city": "Iaundê"
+  },
+  {
+    "iso": "CA",
+    "country": "Canadá",
+    "code": "30155",
+    "city": "Montreal"
+  },
+  {
+    "iso": "CA",
+    "country": "Canadá",
+    "code": "30252",
+    "city": "Ottawa"
+  },
+  {
+    "iso": "CA",
+    "country": "Canadá",
+    "code": "30635",
+    "city": "Toronto"
+  },
+  {
+    "iso": "CA",
+    "country": "Canadá",
+    "code": "39063",
+    "city": "Vancouver"
+  },
+  {
+    "iso": "QA",
+    "country": "Catar",
+    "code": "29653",
+    "city": "Doha"
+  },
+  {
+    "iso": "KZ",
+    "country": "Cazaquistão",
+    "code": "39241",
+    "city": "Astana"
+  },
+  {
+    "iso": "CL",
+    "country": "Chile",
+    "code": "30481",
+    "city": "Santiago"
+  },
+  {
+    "iso": "CN",
+    "country": "China",
+    "code": "30651",
+    "city": "Cantão"
+  },
+  {
+    "iso": "CN",
+    "country": "China",
+    "code": "30317",
+    "city": "Pequim"
+  },
+  {
+    "iso": "CN",
+    "country": "China",
+    "code": "30848",
+    "city": "Xangai"
+  },
+  {
+    "iso": "HK",
+    "country": "China (Hong Kong)",
+    "code": "29793",
+    "city": "Hong Kong"
+  },
+  {
+    "iso": "CY",
+    "country": "Chipre",
+    "code": "39322",
+    "city": "Nicósia"
+  },
+  {
+    "iso": "CO",
+    "country": "Colômbia",
+    "code": "29408",
+    "city": "Bogotá"
+  },
+  {
+    "iso": "KP",
+    "country": "Coreia do Norte",
+    "code": "99295",
+    "city": "Pyongyang"
+  },
+  {
+    "iso": "KR",
+    "country": "Coreia do Sul",
+    "code": "30538",
+    "city": "Seul"
+  },
+  {
+    "iso": "CR",
+    "country": "Costa Rica",
+    "code": "30511",
+    "city": "São José"
+  },
+  {
+    "iso": "CI",
+    "country": "Costa do Marfim",
+    "code": "29254",
+    "city": "Abidjã"
+  },
+  {
+    "iso": "HR",
+    "country": "Croácia",
+    "code": "39020",
+    "city": "Zagreb"
+  },
+  {
+    "iso": "CU",
+    "country": "Cuba",
+    "code": "29777",
+    "city": "Havana"
+  },
+  {
+    "iso": "DK",
+    "country": "Dinamarca",
+    "code": "29599",
+    "city": "Copenhague"
+  },
+  {
+    "iso": "EG",
+    "country": "Egito",
+    "code": "29483",
+    "city": "Cairo"
+  },
+  {
+    "iso": "SV",
+    "country": "El Salvador",
+    "code": "30520",
+    "city": "São Salvador"
+  },
+  {
+    "iso": "AE",
+    "country": "Emirados Árabes Unidos",
+    "code": "29262",
+    "city": "Abu Dhabi"
+  },
+  {
+    "iso": "EC",
+    "country": "Equador",
+    "code": "30392",
+    "city": "Quito"
+  },
+  {
+    "iso": "SK",
+    "country": "Eslováquia",
+    "code": "39209",
+    "city": "Bratislava"
+  },
+  {
+    "iso": "SI",
+    "country": "Eslovênia",
+    "code": "39160",
+    "city": "Liubliana"
+  },
+  {
+    "iso": "ES",
+    "country": "Espanha",
+    "code": "29351",
+    "city": "Barcelona"
+  },
+  {
+    "iso": "ES",
+    "country": "Espanha",
+    "code": "30066",
+    "city": "Madri"
+  },
+  {
+    "iso": "US",
+    "country": "Estados Unidos",
+    "code": "39080",
+    "city": "Atlanta"
+  },
+  {
+    "iso": "US",
+    "country": "Estados Unidos",
+    "code": "29416",
+    "city": "Boston"
+  },
+  {
+    "iso": "US",
+    "country": "Estados Unidos",
+    "code": "29513",
+    "city": "Chicago"
+  },
+  {
+    "iso": "US",
+    "country": "Estados Unidos",
+    "code": "30902",
+    "city": "Hartford"
+  },
+  {
+    "iso": "US",
+    "country": "Estados Unidos",
+    "code": "29807",
+    "city": "Houston"
+  },
+  {
+    "iso": "US",
+    "country": "Estados Unidos",
+    "code": "29980",
+    "city": "Los Angeles"
+  },
+  {
+    "iso": "US",
+    "country": "Estados Unidos",
+    "code": "30112",
+    "city": "Miami"
+  },
+  {
+    "iso": "US",
+    "country": "Estados Unidos",
+    "code": "30228",
+    "city": "Nova York"
+  },
+  {
+    "iso": "US",
+    "country": "Estados Unidos",
+    "code": "99490",
+    "city": "Orlando"
+  },
+  {
+    "iso": "US",
+    "country": "Estados Unidos",
+    "code": "30503",
+    "city": "São Francisco"
+  },
+  {
+    "iso": "US",
+    "country": "Estados Unidos",
+    "code": "30783",
+    "city": "Washington"
+  },
+  {
+    "iso": "EE",
+    "country": "Estônia",
+    "code": "99317",
+    "city": "Talin"
+  },
+  {
+    "iso": "ET",
+    "country": "Etiópia",
+    "code": "99325",
+    "city": "Adis Abeba"
+  },
+  {
+    "iso": "PH",
+    "country": "Filipinas",
+    "code": "30082",
+    "city": "Manila"
+  },
+  {
+    "iso": "FI",
+    "country": "Finlândia",
+    "code": "29785",
+    "city": "Helsinque"
+  },
+  {
+    "iso": "FR",
+    "country": "França",
+    "code": "99511",
+    "city": "Marselha"
+  },
+  {
+    "iso": "FR",
+    "country": "França",
+    "code": "30287",
+    "city": "Paris"
+  },
+  {
+    "iso": "GA",
+    "country": "Gabão",
+    "code": "29939",
+    "city": "Libreville"
+  },
+  {
+    "iso": "GH",
+    "country": "Gana",
+    "code": "29270",
+    "city": "Accra"
+  },
+  {
+    "iso": "GE",
+    "country": "Geórgia",
+    "code": "99104",
+    "city": "Tbilisi"
+  },
+  {
+    "iso": "GR",
+    "country": "Grécia",
+    "code": "29335",
+    "city": "Atenas"
+  },
+  {
+    "iso": "GT",
+    "country": "Guatemala",
+    "code": "98000",
+    "city": "Guatemala"
+  },
+  {
+    "iso": "GY",
+    "country": "Guiana",
+    "code": "29718",
+    "city": "Georgetown"
+  },
+  {
+    "iso": "GF",
+    "country": "Guiana Francesa",
+    "code": "29475",
+    "city": "Caiena"
+  },
+  {
+    "iso": "GF",
+    "country": "Guiana Francesa",
+    "code": "99333",
+    "city": "Saint-Georges de l'Oyapock"
+  },
+  {
+    "iso": "GN",
+    "country": "Guiné",
+    "code": "38903",
+    "city": "Conacri"
+  },
+  {
+    "iso": "GQ",
+    "country": "Guiné Equatorial",
+    "code": "39263",
+    "city": "Malabo"
+  },
+  {
+    "iso": "GW",
+    "country": "Guiné-Bissau",
+    "code": "29394",
+    "city": "Bissau"
+  },
+  {
+    "iso": "HT",
+    "country": "Haiti",
+    "code": "30333",
+    "city": "Porto Príncipe"
+  },
+  {
+    "iso": "HN",
+    "country": "Honduras",
+    "code": "30600",
+    "city": "Tegucigalpa"
+  },
+  {
+    "iso": "HU",
+    "country": "Hungria",
+    "code": "29459",
+    "city": "Budapeste"
+  },
+  {
+    "iso": "ID",
+    "country": "Indonésia",
+    "code": "29840",
+    "city": "Jacarta"
+  },
+  {
+    "iso": "IQ",
+    "country": "Iraque",
+    "code": "99171",
+    "city": "Bagdá"
+  },
+  {
+    "iso": "IE",
+    "country": "Irlanda",
+    "code": "29661",
+    "city": "Dublin"
+  },
+  {
+    "iso": "IR",
+    "country": "Irã",
+    "code": "30597",
+    "city": "Teerã"
+  },
+  {
+    "iso": "IL",
+    "country": "Israel",
+    "code": "30619",
+    "city": "Tel Aviv"
+  },
+  {
+    "iso": "IT",
+    "country": "Itália",
+    "code": "30120",
+    "city": "Milão"
+  },
+  {
+    "iso": "IT",
+    "country": "Itália",
+    "code": "30449",
+    "city": "Roma"
+  },
+  {
+    "iso": "JM",
+    "country": "Jamaica",
+    "code": "99430",
+    "city": "Kingston"
+  },
+  {
+    "iso": "JP",
+    "country": "Japão",
+    "code": "29742",
+    "city": "Hamamatsu"
+  },
+  {
+    "iso": "JP",
+    "country": "Japão",
+    "code": "30198",
+    "city": "Nagóia"
+  },
+  {
+    "iso": "JP",
+    "country": "Japão",
+    "code": "30627",
+    "city": "Tóquio"
+  },
+  {
+    "iso": "JO",
+    "country": "Jordânia",
+    "code": "29289",
+    "city": "Amã"
+  },
+  {
+    "iso": "KW",
+    "country": "Kuwait",
+    "code": "29882",
+    "city": "Kuaite"
+  },
+  {
+    "iso": "LB",
+    "country": "Líbano",
+    "code": "29360",
+    "city": "Beirute"
+  },
+  {
+    "iso": "LY",
+    "country": "Líbia",
+    "code": "30686",
+    "city": "Trípoli"
+  },
+  {
+    "iso": "MW",
+    "country": "Malawi",
+    "code": "99341",
+    "city": "Lilongue"
+  },
+  {
+    "iso": "ML",
+    "country": "Mali",
+    "code": "99350",
+    "city": "Bamako"
+  },
+  {
+    "iso": "MY",
+    "country": "Malásia",
+    "code": "29890",
+    "city": "Kuala Lumpur"
+  },
+  {
+    "iso": "MA",
+    "country": "Marrocos",
+    "code": "30406",
+    "city": "Rabat"
+  },
+  {
+    "iso": "MM",
+    "country": "Mianmar",
+    "code": "99376",
+    "city": "Yangon"
+  },
+  {
+    "iso": "MZ",
+    "country": "Moçambique",
+    "code": "30090",
+    "city": "Maputo"
+  },
+  {
+    "iso": "MX",
+    "country": "México",
+    "code": "30104",
+    "city": "Cidade do México"
+  },
+  {
+    "iso": "NA",
+    "country": "Namíbia",
+    "code": "30821",
+    "city": "Windhoek"
+  },
+  {
+    "iso": "NP",
+    "country": "Nepal",
+    "code": "29173",
+    "city": "Katmandu"
+  },
+  {
+    "iso": "NI",
+    "country": "Nicarágua",
+    "code": "30074",
+    "city": "Manágua"
+  },
+  {
+    "iso": "NG",
+    "country": "Nigéria",
+    "code": "99198",
+    "city": "Abuja"
+  },
+  {
+    "iso": "NG",
+    "country": "Nigéria",
+    "code": "29912",
+    "city": "Lagos"
+  },
+  {
+    "iso": "NO",
+    "country": "Noruega",
+    "code": "30244",
+    "city": "Oslo"
+  },
+  {
+    "iso": "NZ",
+    "country": "Nova Zelândia",
+    "code": "30805",
+    "city": "Wellington"
+  },
+  {
+    "iso": "OM",
+    "country": "Omã",
+    "code": "39102",
+    "city": "Mascate"
+  },
+  {
+    "iso": "PS",
+    "country": "Palestina",
+    "code": "30414",
+    "city": "Ramallah"
+  },
+  {
+    "iso": "PA",
+    "country": "Panamá",
+    "code": "30260",
+    "city": "Panamá"
+  },
+  {
+    "iso": "PK",
+    "country": "Paquistão",
+    "code": "29831",
+    "city": "Islamabade"
+  },
+  {
+    "iso": "PY",
+    "country": "Paraguai",
+    "code": "29327",
+    "city": "Assunção"
+  },
+  {
+    "iso": "PY",
+    "country": "Paraguai",
+    "code": "29556",
+    "city": "Ciudad del Este"
+  },
+  {
+    "iso": "PY",
+    "country": "Paraguai",
+    "code": "29580",
+    "city": "Concepción"
+  },
+  {
+    "iso": "PY",
+    "country": "Paraguai",
+    "code": "29670",
+    "city": "Encarnación"
+  },
+  {
+    "iso": "PY",
+    "country": "Paraguai",
+    "code": "30309",
+    "city": "Pedro Juan Caballero"
+  },
+  {
+    "iso": "PY",
+    "country": "Paraguai",
+    "code": "30465",
+    "city": "Salto del Guairá"
+  },
+  {
+    "iso": "NL",
+    "country": "Países Baixos",
+    "code": "30457",
+    "city": "Amsterdã"
+  },
+  {
+    "iso": "PE",
+    "country": "Peru",
+    "code": "29823",
+    "city": "Iquitos"
+  },
+  {
+    "iso": "PE",
+    "country": "Peru",
+    "code": "29947",
+    "city": "Lima"
+  },
+  {
+    "iso": "PL",
+    "country": "Polônia",
+    "code": "30740",
+    "city": "Varsóvia"
+  },
+  {
+    "iso": "PT",
+    "country": "Portugal",
+    "code": "30961",
+    "city": "Faro"
+  },
+  {
+    "iso": "PT",
+    "country": "Portugal",
+    "code": "29955",
+    "city": "Lisboa"
+  },
+  {
+    "iso": "PT",
+    "country": "Portugal",
+    "code": "30341",
+    "city": "Porto"
+  },
+  {
+    "iso": "KE",
+    "country": "Quênia",
+    "code": "30201",
+    "city": "Nairóbi"
+  },
+  {
+    "iso": "GB",
+    "country": "Reino Unido",
+    "code": "99503",
+    "city": "Edimburgo"
+  },
+  {
+    "iso": "GB",
+    "country": "Reino Unido",
+    "code": "29971",
+    "city": "Londres"
+  },
+  {
+    "iso": "CD",
+    "country": "República Democrática do Congo",
+    "code": "29874",
+    "city": "Kinshasa"
+  },
+  {
+    "iso": "DO",
+    "country": "República Dominicana",
+    "code": "30490",
+    "city": "São Domingos"
+  },
+  {
+    "iso": "CG",
+    "country": "República do Congo",
+    "code": "39187",
+    "city": "Brazzaville"
+  },
+  {
+    "iso": "RO",
+    "country": "Romênia",
+    "code": "29440",
+    "city": "Bucareste"
+  },
+  {
+    "iso": "RU",
+    "country": "Rússia",
+    "code": "30163",
+    "city": "Moscou"
+  },
+  {
+    "iso": "LC",
+    "country": "Santa Lúcia",
+    "code": "99384",
+    "city": "Castries"
+  },
+  {
+    "iso": "SN",
+    "country": "Senegal",
+    "code": "29610",
+    "city": "Dacar"
+  },
+  {
+    "iso": "SG",
+    "country": "Singapura",
+    "code": "29548",
+    "city": "Singapura"
+  },
+  {
+    "iso": "LK",
+    "country": "Sri Lanka",
+    "code": "30929",
+    "city": "Colombo"
+  },
+  {
+    "iso": "SR",
+    "country": "Suriname",
+    "code": "30279",
+    "city": "Paramaribo"
+  },
+  {
+    "iso": "SE",
+    "country": "Suécia",
+    "code": "29688",
+    "city": "Estocolmo"
+  },
+  {
+    "iso": "CH",
+    "country": "Suíça",
+    "code": "29700",
+    "city": "Genebra"
+  },
+  {
+    "iso": "CH",
+    "country": "Suíça",
+    "code": "30864",
+    "city": "Zurique"
+  },
+  {
+    "iso": "ST",
+    "country": "São Tomé e Príncipe",
+    "code": "39225",
+    "city": "São Tomé"
+  },
+  {
+    "iso": "RS",
+    "country": "Sérvia",
+    "code": "29378",
+    "city": "Belgrado"
+  },
+  {
+    "iso": "SY",
+    "country": "Síria",
+    "code": "29637",
+    "city": "Damasco"
+  },
+  {
+    "iso": "TH",
+    "country": "Tailândia",
+    "code": "29343",
+    "city": "Bangkok"
+  },
+  {
+    "iso": "TW",
+    "country": "Taiwan",
+    "code": "30570",
+    "city": "Taipé"
+  },
+  {
+    "iso": "TZ",
+    "country": "Tanzânia",
+    "code": "38962",
+    "city": "Dar es Salaam"
+  },
+  {
+    "iso": "CZ",
+    "country": "Tchéquia",
+    "code": "30350",
+    "city": "Praga"
+  },
+  {
+    "iso": "TL",
+    "country": "Timor-Leste",
+    "code": "29645",
+    "city": "Díli"
+  },
+  {
+    "iso": "TG",
+    "country": "Togo",
+    "code": "29963",
+    "city": "Lomé"
+  },
+  {
+    "iso": "TT",
+    "country": "Trinidad e Tobago",
+    "code": "30325",
+    "city": "Port of Spain"
+  },
+  {
+    "iso": "TN",
+    "country": "Tunísia",
+    "code": "30708",
+    "city": "Túnis"
+  },
+  {
+    "iso": "TR",
+    "country": "Turquia",
+    "code": "29297",
+    "city": "Ancara"
+  },
+  {
+    "iso": "TR",
+    "country": "Turquia",
+    "code": "39306",
+    "city": "Istambul"
+  },
+  {
+    "iso": "UA",
+    "country": "Ucrânia",
+    "code": "29858",
+    "city": "Kiev"
+  },
+  {
+    "iso": "UY",
+    "country": "Uruguai",
+    "code": "29319",
+    "city": "Artigas"
+  },
+  {
+    "iso": "UY",
+    "country": "Uruguai",
+    "code": "29521",
+    "city": "Chuy"
+  },
+  {
+    "iso": "UY",
+    "country": "Uruguai",
+    "code": "30147",
+    "city": "Montevidéu"
+  },
+  {
+    "iso": "UY",
+    "country": "Uruguai",
+    "code": "30430",
+    "city": "Rio Branco"
+  },
+  {
+    "iso": "UY",
+    "country": "Uruguai",
+    "code": "99244",
+    "city": "Rivera"
+  },
+  {
+    "iso": "VE",
+    "country": "Venezuela",
+    "code": "29505",
+    "city": "Caracas"
+  },
+  {
+    "iso": "VE",
+    "country": "Venezuela",
+    "code": "29564",
+    "city": "Ciudad Guayana"
+  },
+  {
+    "iso": "VE",
+    "country": "Venezuela",
+    "code": "99279",
+    "city": "Santa Elena de Uairén"
+  },
+  {
+    "iso": "VN",
+    "country": "Vietnã",
+    "code": "29750",
+    "city": "Hanói"
+  },
+  {
+    "iso": "ZW",
+    "country": "Zimbábue",
+    "code": "29769",
+    "city": "Harare"
+  },
+  {
+    "iso": "ZM",
+    "country": "Zâmbia",
+    "code": "99287",
+    "city": "Lusaca"
+  },
+  {
+    "iso": "ZA",
+    "country": "África do Sul",
+    "code": "29530",
+    "city": "Cidade do Cabo"
+  },
+  {
+    "iso": "ZA",
+    "country": "África do Sul",
+    "code": "30376",
+    "city": "Pretória"
+  },
+  {
+    "iso": "AT",
+    "country": "Áustria",
+    "code": "30767",
+    "city": "Viena"
+  },
+  {
+    "iso": "IN",
+    "country": "Índia",
+    "code": "30171",
+    "city": "Mumbai"
+  },
+  {
+    "iso": "IN",
+    "country": "Índia",
+    "code": "30210",
+    "city": "Nova Délhi"
+  }
+]

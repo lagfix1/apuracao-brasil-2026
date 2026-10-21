@@ -197,6 +197,7 @@
       overlayFromData(d,'Brasil');
       setLive(d.fetch?.stale?'stale':'live',d.fetch?.stale?'Último dado':'TSE online');
       updateUiTime();
+      if (!silent) startPolling();
     } catch(e) {
       const waiting = e.status===404 && state.round===2;
       if (silent) { setLive(waiting?'waiting':'stale',waiting?'Aguardando TSE':'Último dado'); return; }
@@ -325,6 +326,7 @@
       overlayFromData(d,UF_NAMES[uf]);
       setLive(d.fetch?.stale?'stale':'live',d.fetch?.stale?'Último dado':'TSE online');
       updateUiTime();
+      if (!silent) startPolling();
     } catch(e) {
       const waiting = e.status===404 && state.round===2;
       if (silent) { setLive(waiting?'waiting':'stale',waiting?'Aguardando TSE':'Último dado'); return; }
@@ -392,6 +394,7 @@
       overlayFromData(d,'Exterior');
       setLive(d.fetch?.stale?'stale':'live',d.fetch?.stale?'Último dado':'TSE online');
       updateUiTime();
+      if (!silent) startPolling();
     } catch(e) {
       const waiting = e.status===404 && state.round===2;
       if (silent) { setLive(waiting?'waiting':'stale',waiting?'Aguardando TSE':'Último dado'); return; }
@@ -429,6 +432,7 @@
       setOverlay(d.country,`${d.cities.length} local(is) com arquivo disponível`,d.sections?.pct,`${fmtInt(d.sections?.counted)} / ${fmtInt(d.sections?.total)}`);
       setLive(d.stale?'stale':'live',d.stale?'Último dado':'TSE online');
       updateUiTime();
+      if (!silent) startPolling();
     } catch(e) {
       const waiting = e.status===404 && state.round===2;
       if (silent) { setLive(waiting?'waiting':'stale',waiting?'Aguardando TSE':'Último dado'); return; }
@@ -460,6 +464,7 @@
       overlayFromData(d,item.label);
       setLive(d.fetch?.stale?'stale':'live',d.fetch?.stale?'Último dado':'TSE online');
       updateUiTime();
+      if (!silent) startPolling();
     } catch(e) {
       const waiting = e.status===404 && state.round===2;
       if (silent) { setLive(waiting?'waiting':'stale',waiting?'Aguardando TSE':'Último dado'); return; }

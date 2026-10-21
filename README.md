@@ -44,7 +44,7 @@ Esses valores podem ser alterados em `config.json`.
 
 ## Hospedar no Railway
 
-O projeto já inclui `railway.json` e `Procfile`.
+O projeto já inclui `Procfile`, e o servidor lê automaticamente a variável `PORT` do Railway.
 
 1. Entre no Railway e escolha **New Project → Deploy from GitHub repo**.
 2. Selecione `lagfix1/apuracao-brasil-2026`.
@@ -52,7 +52,7 @@ O projeto já inclui `railway.json` e `Procfile`.
 4. No serviço, abra **Settings → Networking → Generate Domain**.
 5. Use o endereço HTTPS gerado pelo Railway.
 
-O servidor lê automaticamente a variável `PORT` do Railway e continua escutando em `0.0.0.0`.
+O servidor lê automaticamente a variável `PORT` do Railway e continua escutando em `0.0.0.0`. Se o Railway não detectar o `Procfile`, em **Settings → Deploy → Start Command** use `python server.py`.
 
 > Como o painel precisa consultar `resultados.tse.jus.br`, o Railway precisa permitir acesso externo de saída. No Trial, conecte/verifique a conta pelo GitHub para tentar obter o Full Trial.
 

@@ -43,6 +43,26 @@ Na mesma rede, use o IP mostrado no terminal, por exemplo `http://192.168.10.237
 
 Requisito: Python 3. Não é necessário Flask, Node, npm ou banco de dados.
 
+## Instalar direto do GitHub
+
+No Termux, depois de instalar o Git uma vez:
+
+```bash
+pkg install git -y
+cd ~
+git clone https://github.com/lagfix1/apuracao-brasil-2026.git
+cd apuracao-brasil-2026
+chmod +x *.sh
+./iniciar_publico.sh
+```
+
+Para atualizar depois:
+
+```bash
+cd ~/apuracao-brasil-2026
+git pull
+```
+
 ## Android / Termux — servidor do Achados do Sul
 
 ```bash

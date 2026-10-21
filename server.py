@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Apuração Brasil 2026 v0.3.0 — servidor stdlib, cache central e dados oficiais do TSE."""
+"""Apuração Brasil 2026 v0.4.0 — servidor stdlib, cache central e dados oficiais do TSE."""
 from __future__ import annotations
 import argparse,gzip,hashlib,json,mimetypes,os,socket,subprocess,sys,threading,time,unicodedata,urllib.error,urllib.request,webbrowser
 from concurrent.futures import ThreadPoolExecutor
@@ -62,7 +62,7 @@ class Fetcher:
             else: self.stats["singleflight_waits"]+=1; leader=False
         if not leader:
             ev.wait(timeout+5); return self.get(url,ttl,timeout,stale)
-        req=urllib.request.Request(url,headers={"User-Agent":"ApuracaoBrasil2026/0.3","Accept":"application/json,text/plain,*/*","Cache-Control":"no-cache"})
+        req=urllib.request.Request(url,headers={"User-Agent":"ApuracaoBrasil2026/0.4","Accept":"application/json,text/plain,*/*","Cache-Control":"no-cache"})
         try:
             with self.lock: self.stats["network_requests"]+=1
             with urllib.request.urlopen(req,timeout=timeout) as r: raw=r.read()
@@ -126,6 +126,11 @@ def resolve(round_no):
 
 def result_url(el,scope,office): return f"{BASE}/{CYCLE}/{el}/dados/{scope}/{scope}-c{office:04d}-e{int(el):06d}-u.json"
 def municipal_url(el,uf,code,office): return f"{BASE}/{CYCLE}/{el}/dados/{uf}/{uf}{str(code).zfill(5)}-c{office:04d}-e{int(el):06d}-u.json"
+def photo_url(el,scope,sq): return f"{BASE}/{CYCLE}/{el}/fotos/{scope}/{sq}.jpeg"
+def add_photos(d,el,scope):
+    for c in d.get("candidates") or []:
+        if c.get("sq"): c["photo_url"]=photo_url(el,scope,c["sq"])
+    return d
 
 def result(scope,office,round_no):
     codes=resolve(round_no)
@@ -134,7 +139,7 @@ def result(scope,office,round_no):
         if scope not in UFS: raise DataError("Selecione uma UF para Governador.",400)
         el,oc=codes["state"],3
     else: raise DataError("Cargo não suportado.",400)
-    url=result_url(el,scope,oc); raw,fm=FETCH.get(url); d=normalize(raw); d.update(source_url=url,fetch=fm,resolved=codes); return d
+    url=result_url(el,scope,oc); raw,fm=FETCH.get(url); d=normalize(raw); add_photos(d,el,"br" if office=="presidente" else scope); d.update(source_url=url,fetch=fm,resolved=codes); return d
 
 def states(round_no):
     codes=resolve(round_no); el=codes["federal"]
@@ -167,13 +172,19 @@ def muni_catalog(round_no):
             if m.get("cd") and m.get("nm"): out.append({"uf":uf,"code":str(m["cd"]),"name":str(m["nm"]).strip(),"capital":str(m.get("c") or "").lower()=="s"})
     return out,url,fm
 
+def capitals(round_no):
+    rows,source,fm=muni_catalog(round_no)
+    out=[{"type":"city","uf":m["uf"],"code":m["code"],"label":m["name"],"subtitle":f"{UFS.get(m['uf'],m['uf'])} · {m['uf'].upper()}","capital":True} for m in rows if m["uf"] in UFS and m.get("capital")]
+    out.sort(key=lambda x:norm(x["label"]))
+    return {"round":round_no,"capitals":out,"source_url":source,"fetch":fm}
+
 EXT_BY_CODE={str(r.get("code") or ""):r for r in exterior_rows()}
 def municipality(uf,code,office,round_no):
     codes=resolve(round_no); uf=uf.lower()
     if office=="presidente": el,oc=codes["federal"],1
     elif office=="governador" and uf in UFS: el,oc=codes["state"],3
     else: raise DataError("Cargo/UF inválidos.",400)
-    url=municipal_url(el,uf,code,oc); raw,fm=FETCH.get(url); d=normalize(raw); d.update(source_url=url,fetch=fm,resolved=codes); return d
+    url=municipal_url(el,uf,code,oc); raw,fm=FETCH.get(url); d=normalize(raw); add_photos(d,el,"br" if office=="presidente" else uf); d.update(source_url=url,fetch=fm,resolved=codes); return d
 
 def search(q,round_no,office,limit=24):
     qn=norm(q).strip()
@@ -258,6 +269,8 @@ def aggregate_country(iso,round_no):
     cs=list(cand.values())
     for x in cs:x["pct"]=100*x["votes"]/votes["valid"] if votes["valid"] else 0
     cs.sort(key=lambda x:(-x["votes"],-x["pct"],norm(x["name"])))
+    for x in cs:
+        if x.get("sq"): x["photo_url"]=photo_url(el,"br",x["sq"])
     return {"iso":iso,"country":country["country"],"round":round_no,"election":el,"available":True,"generated_at":max([g for g in gens if g] or [None]),"stale":stale,"sections":sec,"electorate":ele,"votes":votes,"candidates":cs,"cities":city_rows,"missing":missing,"source":"Tribunal Superior Eleitoral"}
 
 def addresses(port):
@@ -295,15 +308,17 @@ class H(BaseHTTPRequestHandler):
     def do_GET(self):
         u=urlparse(self.path);p=u.path;q=parse_qs(u.query)
         try:
-            if p=="/api/health":return self.js({"ok":True,"version":"0.3.0","time":datetime.now().isoformat(),"source":BASE,"cache":dict(FETCH.stats),"derived_cache":dict(DERIVED.stats)})
+            if p=="/api/health":return self.js({"ok":True,"version":"0.4.0","time":datetime.now().isoformat(),"source":BASE,"cache":dict(FETCH.stats),"derived_cache":dict(DERIVED.stats)})
             if p=="/api/meta":
                 r=int(q.get("round",[CFG["default_round"]])[0]);codes=resolve(r)
-                return self.js({"ok":True,"title":CFG["title"],"version":"0.3.0","round":r,"poll_seconds":CFG["poll_seconds"],"selection_poll_seconds":CFG["selection_poll_seconds"],"exterior_poll_seconds":CFG["exterior_poll_seconds"],"country_poll_seconds":CFG["country_poll_seconds"],"states_poll_seconds":CFG["states_poll_seconds"],"pause_when_hidden":bool(CFG["pause_when_hidden"]),"enable_test_mode":bool(CFG["enable_test_mode"]),"resolved":codes,"source":"Tribunal Superior Eleitoral","source_base":BASE})
+                return self.js({"ok":True,"title":CFG["title"],"version":"0.4.0","round":r,"poll_seconds":CFG["poll_seconds"],"selection_poll_seconds":CFG["selection_poll_seconds"],"exterior_poll_seconds":CFG["exterior_poll_seconds"],"country_poll_seconds":CFG["country_poll_seconds"],"states_poll_seconds":CFG["states_poll_seconds"],"pause_when_hidden":bool(CFG["pause_when_hidden"]),"enable_test_mode":bool(CFG["enable_test_mode"]),"resolved":codes,"source":"Tribunal Superior Eleitoral","source_base":BASE})
             if p=="/api/result":
                 r=int(q.get("round",[CFG["default_round"]])[0]);return self.js({"ok":True,"data":result(q.get("scope",["br"])[0].lower(),q.get("office",["presidente"])[0].lower(),r)})
             if p=="/api/states":
                 r=int(q.get("round",[CFG["default_round"]])[0]);d=DERIVED.get(("states",r),int(CFG["states_cache_seconds"]),lambda:states(r));return self.js({"ok":True,"data":d})
             if p=="/api/exterior/catalog":return self.js({"ok":True,"data":exterior_catalog()})
+            if p=="/api/capitals":
+                r=int(q.get("round",[CFG["default_round"]])[0]);return self.js({"ok":True,"data":capitals(r)})
             if p=="/api/exterior/country":
                 r=int(q.get("round",[CFG["default_round"]])[0]);iso=q.get("iso",[""])[0].upper();d=DERIVED.get(("country",r,iso),int(CFG["country_cache_seconds"]),lambda:aggregate_country(iso,r));return self.js({"ok":True,"data":d})
             if p=="/api/search":
@@ -323,9 +338,9 @@ class H(BaseHTTPRequestHandler):
         self.hdr(200,ctype,len(raw),cache);self.wfile.write(raw)
 
 def main():
-    ap=argparse.ArgumentParser();ap.add_argument("--host",default=os.getenv("APURACAO_HOST",CFG["host"]));ap.add_argument("--port",type=int,default=int(os.getenv("APURACAO_PORT",CFG["port"])));ap.add_argument("--open",action="store_true");a=ap.parse_args()
+    ap=argparse.ArgumentParser();ap.add_argument("--host",default=os.getenv("APURACAO_HOST",CFG["host"]));ap.add_argument("--port",type=int,default=int(os.getenv("PORT",os.getenv("APURACAO_PORT",CFG["port"]))));ap.add_argument("--open",action="store_true");a=ap.parse_args()
     s=ThreadingHTTPServer((a.host,a.port),H)
-    print("\n=== APURAÇÃO BRASIL 2026 v0.3.0 ===");print("Fonte: TSE — resultados.tse.jus.br");print(f"Local: http://127.0.0.1:{a.port}")
+    print("\n=== APURAÇÃO BRASIL 2026 v0.4.0 ===");print("Fonte: TSE — resultados.tse.jus.br");print(f"Local: http://127.0.0.1:{a.port}")
     for x in addresses(a.port):print("Rede: ",x)
     print("Modo econômico: cache central, single-flight, ETag/gzip e atualização inteligente.\nCtrl+C para encerrar.\n")
     if a.open:threading.Timer(1,lambda:webbrowser.open(f"http://127.0.0.1:{a.port}")).start()

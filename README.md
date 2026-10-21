@@ -1,8 +1,17 @@
-# Apuração Brasil 2026 — v0.3.0 "Modo Apuração"
+# Apuração Brasil 2026 — v0.4.0 "Modo Apuração"
 
 Painel web responsivo para acompanhar os arquivos oficiais de resultados publicados pelo Tribunal Superior Eleitoral (TSE). Funciona em celular, tablet, computador e TV com navegador moderno.
 
 > Projeto independente, sem vínculo com o TSE. O painel apenas lê e apresenta os arquivos oficiais disponibilizados em `resultados.tse.jus.br`.
+
+## Novidades da v0.4.0
+
+- **Fotos dos candidatos** carregadas diretamente dos arquivos oficiais do TSE.
+- **Brasil geral** permanece visível em um resumo superior mesmo quando você abre um estado, cidade ou país.
+- O mapa do Brasil mostra a **porcentagem de seções totalizadas em cada UF**.
+- Novo filtro rápido de **capitais**, além da pesquisa livre por cidade/estado/país.
+- Projeto preparado para o **Railway**, usando a porta `PORT` fornecida automaticamente pela plataforma.
+- Mantém todo o modo econômico da v0.3: cache central, single-flight, ETag/gzip e atualização sob demanda.
 
 ## Novidades da v0.3.0
 
@@ -32,6 +41,20 @@ Esta versão foi otimizada para ficar aberta durante a apuração sem gerar trá
 - Cache da soma por país: **45 s**
 
 Esses valores podem ser alterados em `config.json`.
+
+## Hospedar no Railway
+
+O projeto já inclui `railway.json` e `Procfile`.
+
+1. Entre no Railway e escolha **New Project → Deploy from GitHub repo**.
+2. Selecione `lagfix1/apuracao-brasil-2026`.
+3. Aguarde o deploy.
+4. No serviço, abra **Settings → Networking → Generate Domain**.
+5. Use o endereço HTTPS gerado pelo Railway.
+
+O servidor lê automaticamente a variável `PORT` do Railway e continua escutando em `0.0.0.0`.
+
+> Como o painel precisa consultar `resultados.tse.jus.br`, o Railway precisa permitir acesso externo de saída. No Trial, conecte/verifique a conta pelo GitHub para tentar obter o Full Trial.
 
 ## Windows
 

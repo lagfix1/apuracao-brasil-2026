@@ -46,12 +46,23 @@
 
       <div class="eco-badge" title="Cache central, respostas compactadas e atualização sob demanda">◉ Modo econômico</div>
 
+      <label class="capital-filter" title="Abrir rapidamente uma capital">
+        <span>Capital</span>
+        <select id="capitalSelect" aria-label="Filtrar por capital">
+          <option value="">Capitais…</option>
+        </select>
+      </label>
+
       <div class="search-box">
         <span class="search-icon">⌕</span>
         <input id="placeSearch" type="search" placeholder="Pesquisar cidade, estado ou país…" autocomplete="off" spellcheck="false">
         <button id="clearSearch" class="search-clear hidden" aria-label="Limpar pesquisa">×</button>
         <div id="searchResults" class="search-results hidden"></div>
       </div>
+    </section>
+
+    <section id="nationalSummary" class="national-summary card-lite">
+      <div class="national-summary-loading">Carregando apuração geral do Brasil…</div>
     </section>
 
     <section class="workspace">
@@ -87,7 +98,7 @@
   </main>
 
   <footer>
-    <div><b>Apuração Brasil 2026 v0.3</b> · modo apuração econômico · projeto independente, sem vínculo com o TSE.</div>
+    <div><b>Apuração Brasil 2026 v0.4</b> · modo apuração econômico · projeto independente, sem vínculo com o TSE.</div>
     <div>Fonte primária: <a href="https://resultados.tse.jus.br" target="_blank" rel="noreferrer">resultados.tse.jus.br</a> · <span id="lastUiUpdate">—</span></div>
   </footer>
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Apuração Brasil 2026 v0.4.0 — servidor stdlib, cache central e dados oficiais do TSE."""
+"""Apuração Brasil 2026 v0.4.1 — servidor stdlib, cache central e dados oficiais do TSE."""
 from __future__ import annotations
 import argparse,gzip,hashlib,json,mimetypes,os,socket,subprocess,sys,threading,time,unicodedata,urllib.error,urllib.request,webbrowser
 from concurrent.futures import ThreadPoolExecutor
@@ -62,7 +62,7 @@ class Fetcher:
             else: self.stats["singleflight_waits"]+=1; leader=False
         if not leader:
             ev.wait(timeout+5); return self.get(url,ttl,timeout,stale)
-        req=urllib.request.Request(url,headers={"User-Agent":"ApuracaoBrasil2026/0.4","Accept":"application/json,text/plain,*/*","Cache-Control":"no-cache"})
+        req=urllib.request.Request(url,headers={"User-Agent":"ApuracaoBrasil2026/0.4.1","Accept":"application/json,text/plain,*/*","Cache-Control":"no-cache"})
         try:
             with self.lock: self.stats["network_requests"]+=1
             with urllib.request.urlopen(req,timeout=timeout) as r: raw=r.read()
@@ -139,7 +139,7 @@ def result(scope,office,round_no):
         if scope not in UFS: raise DataError("Selecione uma UF para Governador.",400)
         el,oc=codes["state"],3
     else: raise DataError("Cargo não suportado.",400)
-    url=result_url(el,scope,oc); raw,fm=FETCH.get(url); d=normalize(raw); add_photos(d,el,scope); d.update(source_url=url,fetch=fm,resolved=codes); return d
+    url=result_url(el,scope,oc); raw,fm=FETCH.get(url); d=normalize(raw); add_photos(d,el,("zz" if scope=="zz" else "br") if office=="presidente" else scope); d.update(source_url=url,fetch=fm,resolved=codes); return d
 
 def states(round_no):
     codes=resolve(round_no); el=codes["federal"]
@@ -184,7 +184,7 @@ def municipality(uf,code,office,round_no):
     if office=="presidente": el,oc=codes["federal"],1
     elif office=="governador" and uf in UFS: el,oc=codes["state"],3
     else: raise DataError("Cargo/UF inválidos.",400)
-    url=municipal_url(el,uf,code,oc); raw,fm=FETCH.get(url); d=normalize(raw); add_photos(d,el,uf); d.update(source_url=url,fetch=fm,resolved=codes); return d
+    url=municipal_url(el,uf,code,oc); raw,fm=FETCH.get(url); d=normalize(raw); add_photos(d,el,("zz" if uf=="zz" else "br") if office=="presidente" else uf); d.update(source_url=url,fetch=fm,resolved=codes); return d
 
 def search(q,round_no,office,limit=24):
     qn=norm(q).strip()
@@ -340,7 +340,7 @@ class H(BaseHTTPRequestHandler):
 def main():
     ap=argparse.ArgumentParser();ap.add_argument("--host",default=os.getenv("APURACAO_HOST",CFG["host"]));ap.add_argument("--port",type=int,default=int(os.getenv("PORT",os.getenv("APURACAO_PORT",CFG["port"]))));ap.add_argument("--open",action="store_true");a=ap.parse_args()
     s=ThreadingHTTPServer((a.host,a.port),H)
-    print("\n=== APURAÇÃO BRASIL 2026 v0.4.0 ===");print("Fonte: TSE — resultados.tse.jus.br");print(f"Local: http://127.0.0.1:{a.port}")
+    print("\n=== APURAÇÃO BRASIL 2026 v0.4.1 ===");print("Fonte: TSE — resultados.tse.jus.br");print(f"Local: http://127.0.0.1:{a.port}")
     for x in addresses(a.port):print("Rede: ",x)
     print("Modo econômico: cache central, single-flight, ETag/gzip e atualização inteligente.\nCtrl+C para encerrar.\n")
     if a.open:threading.Timer(1,lambda:webbrowser.open(f"http://127.0.0.1:{a.port}")).start()

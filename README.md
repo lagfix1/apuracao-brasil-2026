@@ -4,6 +4,10 @@ Painel web responsivo para acompanhar os arquivos oficiais de resultados publica
 
 > Projeto independente, sem vínculo com o TSE. O painel apenas lê e apresenta os arquivos oficiais disponibilizados em `resultados.tse.jus.br`.
 
+## Correção v0.4.1
+
+- Corrige as fotos de candidatos a Presidente ao abrir estados e capitais: a imagem continua sendo buscada na abrangência nacional `br`; no exterior usa `zz`; Governador continua usando a UF.
+
 ## Novidades da v0.4.0
 
 - **Fotos dos candidatos** carregadas diretamente dos arquivos oficiais do TSE.

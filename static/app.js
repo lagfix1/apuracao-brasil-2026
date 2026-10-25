@@ -27,6 +27,8 @@
     pollTimer: null,
     statePollTimer: null,
     nationalSummaryTimer: null,
+    presenceTimer: null,
+    presenceId: null,
     stateSnapshot: null,
     lastStatesAt: 0,
     httpCache: new Map(),
@@ -63,6 +65,43 @@
       if (etag) state.httpCache.set(url,{etag,body});
       return body;
     } finally { clearTimeout(timer); }
+  }
+
+  function getPresenceId() {
+    if (state.presenceId) return state.presenceId;
+    const key = 'apuracao-presence-id';
+    try {
+      let id = localStorage.getItem(key);
+      if (!id) {
+        id = (crypto?.randomUUID?.() || `u-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`);
+        localStorage.setItem(key,id);
+      }
+      state.presenceId = id;
+    } catch {
+      state.presenceId = `u-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+    }
+    return state.presenceId;
+  }
+
+  async function heartbeatPresence() {
+    if (!navigator.onLine || document.hidden) return;
+    try {
+      const cid = encodeURIComponent(getPresenceId());
+      const r = await fetch(`/api/presence?cid=${cid}`,{cache:'no-store'});
+      if (!r.ok) return;
+      const b = await r.json();
+      const el = $('#onlineUsers');
+      if (el && Number.isFinite(Number(b.active))) {
+        $('b',el).textContent = fmtInt(b.active);
+        el.classList.add('ready');
+      }
+    } catch {}
+  }
+
+  function startPresence() {
+    clearInterval(state.presenceTimer);
+    heartbeatPresence();
+    state.presenceTimer = setInterval(heartbeatPresence,30000);
   }
 
   function setLive(mode,text) {
@@ -709,13 +748,14 @@
     window.addEventListener('offline',()=>{ stopPolling(); setLive('error','Sem rede'); });
     document.addEventListener('visibilitychange',()=>{
       if (document.hidden && state.meta?.pause_when_hidden) { stopPolling(); setLive('paused','Pausado'); }
-      else resumeAfterPause();
+      else { heartbeatPresence(); resumeAfterPause(); }
     });
     setupSearch();
   }
 
   async function boot() {
     setupEvents();
+    startPresence();
     updateRoundUi();
     // A cartografia local abre mesmo se o TSE estiver temporariamente indisponível.
     try { await initBrazil(); } catch(e) { console.warn('Falha ao carregar cartografia local',e); }

@@ -339,7 +339,7 @@ class H(BaseHTTPRequestHandler):
                 return self.js({"ok":True,"active":count,"window_seconds":PRESENCE.ttl},etag=False)
             if p=="/api/meta":
                 r=int(q.get("round",[CFG["default_round"]])[0]);codes=resolve(r)
-                return self.js({"ok":True,"title":CFG["title"],"version":"0.4.2","round":r,"poll_seconds":CFG["poll_seconds"],"selection_poll_seconds":CFG["selection_poll_seconds"],"exterior_poll_seconds":CFG["exterior_poll_seconds"],"country_poll_seconds":CFG["country_poll_seconds"],"states_poll_seconds":CFG["states_poll_seconds"],"pause_when_hidden":bool(CFG["pause_when_hidden"]),"enable_test_mode":bool(CFG["enable_test_mode"]),"resolved":codes,"source":"Tribunal Superior Eleitoral","source_base":BASE})
+                return self.js({"ok":True,"title":CFG["title"],"version":"0.4.3","round":r,"poll_seconds":CFG["poll_seconds"],"selection_poll_seconds":CFG["selection_poll_seconds"],"exterior_poll_seconds":CFG["exterior_poll_seconds"],"country_poll_seconds":CFG["country_poll_seconds"],"states_poll_seconds":CFG["states_poll_seconds"],"pause_when_hidden":bool(CFG["pause_when_hidden"]),"enable_test_mode":bool(CFG["enable_test_mode"]),"resolved":codes,"source":"Tribunal Superior Eleitoral","source_base":BASE})
             if p=="/api/result":
                 r=int(q.get("round",[CFG["default_round"]])[0]);return self.js({"ok":True,"data":result(q.get("scope",["br"])[0].lower(),q.get("office",["presidente"])[0].lower(),r)})
             if p=="/api/states":

@@ -22,6 +22,31 @@ UFS={"ac":"Acre","al":"Alagoas","am":"Amazonas","ap":"Amapá","ba":"Bahia","ce":
 class DataError(Exception):
     def __init__(self,msg,status=503): super().__init__(msg); self.status=status
 
+class Presence:
+    def __init__(self,ttl=90):
+        self.ttl=ttl
+        self.clients={}
+        self.lock=threading.Lock()
+    def _prune(self,now):
+        cutoff=now-self.ttl
+        stale=[cid for cid,ts in self.clients.items() if ts<cutoff]
+        for cid in stale:self.clients.pop(cid,None)
+    def touch(self,cid):
+        cid=str(cid or "").strip()[:128]
+        if not cid:raise DataError("Identificador de presença ausente.",400)
+        now=time.time()
+        with self.lock:
+            self._prune(now)
+            self.clients[cid]=now
+            return len(self.clients)
+    def count(self):
+        now=time.time()
+        with self.lock:
+            self._prune(now)
+            return len(self.clients)
+
+PRESENCE=Presence(90)
+
 def i(v):
     try: return int("".join(c for c in str(v or "") if c.isdigit() or c=="-") or 0)
     except: return 0
@@ -62,7 +87,7 @@ class Fetcher:
             else: self.stats["singleflight_waits"]+=1; leader=False
         if not leader:
             ev.wait(timeout+5); return self.get(url,ttl,timeout,stale)
-        req=urllib.request.Request(url,headers={"User-Agent":"ApuracaoBrasil2026/0.4.1","Accept":"application/json,text/plain,*/*","Cache-Control":"no-cache"})
+        req=urllib.request.Request(url,headers={"User-Agent":"ApuracaoBrasil2026/0.4.2","Accept":"application/json,text/plain,*/*","Cache-Control":"no-cache"})
         try:
             with self.lock: self.stats["network_requests"]+=1
             with urllib.request.urlopen(req,timeout=timeout) as r: raw=r.read()
@@ -308,10 +333,13 @@ class H(BaseHTTPRequestHandler):
     def do_GET(self):
         u=urlparse(self.path);p=u.path;q=parse_qs(u.query)
         try:
-            if p=="/api/health":return self.js({"ok":True,"version":"0.4.0","time":datetime.now().isoformat(),"source":BASE,"cache":dict(FETCH.stats),"derived_cache":dict(DERIVED.stats)})
+            if p=="/api/health":return self.js({"ok":True,"version":"0.4.2","time":datetime.now().isoformat(),"source":BASE,"active_users":PRESENCE.count(),"cache":dict(FETCH.stats),"derived_cache":dict(DERIVED.stats)})
+            if p=="/api/presence":
+                cid=q.get("cid",[""])[0];count=PRESENCE.touch(cid)
+                return self.js({"ok":True,"active":count,"window_seconds":PRESENCE.ttl},etag=False)
             if p=="/api/meta":
                 r=int(q.get("round",[CFG["default_round"]])[0]);codes=resolve(r)
-                return self.js({"ok":True,"title":CFG["title"],"version":"0.4.0","round":r,"poll_seconds":CFG["poll_seconds"],"selection_poll_seconds":CFG["selection_poll_seconds"],"exterior_poll_seconds":CFG["exterior_poll_seconds"],"country_poll_seconds":CFG["country_poll_seconds"],"states_poll_seconds":CFG["states_poll_seconds"],"pause_when_hidden":bool(CFG["pause_when_hidden"]),"enable_test_mode":bool(CFG["enable_test_mode"]),"resolved":codes,"source":"Tribunal Superior Eleitoral","source_base":BASE})
+                return self.js({"ok":True,"title":CFG["title"],"version":"0.4.2","round":r,"poll_seconds":CFG["poll_seconds"],"selection_poll_seconds":CFG["selection_poll_seconds"],"exterior_poll_seconds":CFG["exterior_poll_seconds"],"country_poll_seconds":CFG["country_poll_seconds"],"states_poll_seconds":CFG["states_poll_seconds"],"pause_when_hidden":bool(CFG["pause_when_hidden"]),"enable_test_mode":bool(CFG["enable_test_mode"]),"resolved":codes,"source":"Tribunal Superior Eleitoral","source_base":BASE})
             if p=="/api/result":
                 r=int(q.get("round",[CFG["default_round"]])[0]);return self.js({"ok":True,"data":result(q.get("scope",["br"])[0].lower(),q.get("office",["presidente"])[0].lower(),r)})
             if p=="/api/states":
@@ -340,7 +368,7 @@ class H(BaseHTTPRequestHandler):
 def main():
     ap=argparse.ArgumentParser();ap.add_argument("--host",default=os.getenv("APURACAO_HOST",CFG["host"]));ap.add_argument("--port",type=int,default=int(os.getenv("PORT",os.getenv("APURACAO_PORT",CFG["port"]))));ap.add_argument("--open",action="store_true");a=ap.parse_args()
     s=ThreadingHTTPServer((a.host,a.port),H)
-    print("\n=== APURAÇÃO BRASIL 2026 v0.4.1 ===");print("Fonte: TSE — resultados.tse.jus.br");print(f"Local: http://127.0.0.1:{a.port}")
+    print("\n=== APURAÇÃO BRASIL 2026 v0.4.2 ===");print("Fonte: TSE — resultados.tse.jus.br");print(f"Local: http://127.0.0.1:{a.port}")
     for x in addresses(a.port):print("Rede: ",x)
     print("Modo econômico: cache central, single-flight, ETag/gzip e atualização inteligente.\nCtrl+C para encerrar.\n")
     if a.open:threading.Timer(1,lambda:webbrowser.open(f"http://127.0.0.1:{a.port}")).start()

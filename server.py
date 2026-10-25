@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Apuração Brasil 2026 v0.4.1 — servidor stdlib, cache central e dados oficiais do TSE."""
+"""Apuração Brasil 2026 v0.4.3 — servidor stdlib, cache central e dados oficiais do TSE."""
 from __future__ import annotations
 import argparse,gzip,hashlib,json,mimetypes,os,socket,subprocess,sys,threading,time,unicodedata,urllib.error,urllib.request,webbrowser
 from concurrent.futures import ThreadPoolExecutor
@@ -9,9 +9,9 @@ from pathlib import Path
 from urllib.parse import parse_qs,urlparse
 
 ROOT=Path(__file__).resolve().parent; STATIC=ROOT/"static"; CACHE=ROOT/"cache"; CACHE.mkdir(exist_ok=True)
-CFG0={"title":"Apuração Brasil 2026","host":"0.0.0.0","port":8088,"default_round":2,"poll_seconds":15,
-"selection_poll_seconds":20,"exterior_poll_seconds":30,"country_poll_seconds":60,"states_poll_seconds":120,
-"cache_seconds":10,"states_cache_seconds":90,"country_cache_seconds":45,"pause_when_hidden":True,"enable_test_mode":True,
+CFG0={"title":"Apuração Brasil 2026","host":"0.0.0.0","port":8088,"default_round":2,"poll_seconds":8,
+"selection_poll_seconds":10,"exterior_poll_seconds":15,"country_poll_seconds":30,"states_poll_seconds":45,
+"cache_seconds":5,"states_cache_seconds":35,"country_cache_seconds":20,"pause_when_hidden":True,"enable_test_mode":True,
 "tse_base":"https://resultados.tse.jus.br/oficial","tse_cycle":"ele2026"}
 CFG=dict(CFG0)
 try: CFG.update(json.loads((ROOT/"config.json").read_text("utf-8")))
@@ -23,7 +23,7 @@ class DataError(Exception):
     def __init__(self,msg,status=503): super().__init__(msg); self.status=status
 
 class Presence:
-    def __init__(self,ttl=90):
+    def __init__(self,ttl=45):
         self.ttl=ttl
         self.clients={}
         self.lock=threading.Lock()
@@ -45,7 +45,7 @@ class Presence:
             self._prune(now)
             return len(self.clients)
 
-PRESENCE=Presence(90)
+PRESENCE=Presence(45)
 
 def i(v):
     try: return int("".join(c for c in str(v or "") if c.isdigit() or c=="-") or 0)
@@ -87,7 +87,7 @@ class Fetcher:
             else: self.stats["singleflight_waits"]+=1; leader=False
         if not leader:
             ev.wait(timeout+5); return self.get(url,ttl,timeout,stale)
-        req=urllib.request.Request(url,headers={"User-Agent":"ApuracaoBrasil2026/0.4.2","Accept":"application/json,text/plain,*/*","Cache-Control":"no-cache"})
+        req=urllib.request.Request(url,headers={"User-Agent":"ApuracaoBrasil2026/0.4.3","Accept":"application/json,text/plain,*/*","Cache-Control":"no-cache"})
         try:
             with self.lock: self.stats["network_requests"]+=1
             with urllib.request.urlopen(req,timeout=timeout) as r: raw=r.read()
@@ -333,7 +333,7 @@ class H(BaseHTTPRequestHandler):
     def do_GET(self):
         u=urlparse(self.path);p=u.path;q=parse_qs(u.query)
         try:
-            if p=="/api/health":return self.js({"ok":True,"version":"0.4.2","time":datetime.now().isoformat(),"source":BASE,"active_users":PRESENCE.count(),"cache":dict(FETCH.stats),"derived_cache":dict(DERIVED.stats)})
+            if p=="/api/health":return self.js({"ok":True,"version":"0.4.3","time":datetime.now().isoformat(),"source":BASE,"active_users":PRESENCE.count(),"cache":dict(FETCH.stats),"derived_cache":dict(DERIVED.stats)})
             if p=="/api/presence":
                 cid=q.get("cid",[""])[0];count=PRESENCE.touch(cid)
                 return self.js({"ok":True,"active":count,"window_seconds":PRESENCE.ttl},etag=False)
@@ -368,7 +368,7 @@ class H(BaseHTTPRequestHandler):
 def main():
     ap=argparse.ArgumentParser();ap.add_argument("--host",default=os.getenv("APURACAO_HOST",CFG["host"]));ap.add_argument("--port",type=int,default=int(os.getenv("PORT",os.getenv("APURACAO_PORT",CFG["port"]))));ap.add_argument("--open",action="store_true");a=ap.parse_args()
     s=ThreadingHTTPServer((a.host,a.port),H)
-    print("\n=== APURAÇÃO BRASIL 2026 v0.4.2 ===");print("Fonte: TSE — resultados.tse.jus.br");print(f"Local: http://127.0.0.1:{a.port}")
+    print("\n=== APURAÇÃO BRASIL 2026 v0.4.3 ===");print("Fonte: TSE — resultados.tse.jus.br");print(f"Local: http://127.0.0.1:{a.port}")
     for x in addresses(a.port):print("Rede: ",x)
     print("Modo econômico: cache central, single-flight, ETag/gzip e atualização inteligente.\nCtrl+C para encerrar.\n")
     if a.open:threading.Timer(1,lambda:webbrowser.open(f"http://127.0.0.1:{a.port}")).start()

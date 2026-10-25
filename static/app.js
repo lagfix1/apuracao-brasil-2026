@@ -101,7 +101,7 @@
   function startPresence() {
     clearInterval(state.presenceTimer);
     heartbeatPresence();
-    state.presenceTimer = setInterval(heartbeatPresence,30000);
+    state.presenceTimer = setInterval(heartbeatPresence,15000);
   }
 
   function setLive(mode,text) {
@@ -664,11 +664,11 @@
 
   function currentPollSeconds() {
     const type = state.currentSelection?.type || 'national';
-    if (type === 'country') return Math.max(30,Number(state.meta?.country_poll_seconds || 60));
-    if (type === 'exterior-total') return Math.max(20,Number(state.meta?.exterior_poll_seconds || 30));
-    if (type === 'state' || type === 'city') return Math.max(15,Number(state.meta?.selection_poll_seconds || 20));
+    if (type === 'country') return Math.max(15,Number(state.meta?.country_poll_seconds || 30));
+    if (type === 'exterior-total') return Math.max(10,Number(state.meta?.exterior_poll_seconds || 15));
+    if (type === 'state' || type === 'city') return Math.max(8,Number(state.meta?.selection_poll_seconds || 10));
     if (type === 'governor-landing') return 120;
-    return Math.max(10,Number(state.meta?.poll_seconds || 15));
+    return Math.max(5,Number(state.meta?.poll_seconds || 8));
   }
 
   function stopPolling() {
@@ -693,7 +693,7 @@
   function scheduleStatesPoll(delaySeconds=null) {
     clearTimeout(state.statePollTimer);
     if (!shouldPoll()) return;
-    const seconds = Math.max(60,Number(state.meta?.states_poll_seconds || 120));
+    const seconds = Math.max(30,Number(state.meta?.states_poll_seconds || 45));
     state.statePollTimer = setTimeout(async()=>{
       if (state.view === 'brasil') { try { await loadStates(true); } catch {} }
       scheduleStatesPoll();
@@ -703,7 +703,7 @@
   function scheduleNationalSummaryPoll(delaySeconds=null) {
     clearTimeout(state.nationalSummaryTimer);
     if (!shouldPoll() || state.office !== 'presidente' || state.currentSelection?.type === 'national') return;
-    const seconds = Math.max(10,Number(state.meta?.poll_seconds || 15));
+    const seconds = Math.max(5,Number(state.meta?.poll_seconds || 8));
     state.nationalSummaryTimer = setTimeout(async()=>{
       try { await loadNationalSummary(true); } catch {}
       scheduleNationalSummaryPoll();
